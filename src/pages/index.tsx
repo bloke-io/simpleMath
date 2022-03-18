@@ -1,56 +1,93 @@
 import {
   Link as ChakraLink,
   Text,
-  Code,
-  List,
-  ListIcon,
-  ListItem,
-} from '@chakra-ui/react'
-import { CheckCircleIcon, LinkIcon } from '@chakra-ui/icons'
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
+  HStack,
+  VStack,
+  Flex,
+  SimpleGrid,
+  Box
+} from "@chakra-ui/react";
 
-import { Hero } from '../components/Hero'
-import { Container } from '../components/Container'
-import { Main } from '../components/Main'
-import { DarkModeSwitch } from '../components/DarkModeSwitch'
-import { CTA } from '../components/CTA'
-import { Footer } from '../components/Footer'
+import { Container } from "../components/Container";
+import { DarkModeSwitch } from "../components/DarkModeSwitch";
+import { Addition } from "../components/Addition";
+import { Subtraction } from "../components/Subtraction";
+import { Multiplication } from "../components/Multiplication";
+import { Divison } from "../components/Division";
+import { useState } from "react";
+import Image from "next/image";
 
-const Index = () => (
-  <Container height="100vh">
-    <Hero />
-    <Main>
-      <Text>
-        Example repository of <Code>Next.js</Code> + <Code>chakra-ui</Code> +{' '}
-        <Code>typescript</Code>.
-      </Text>
+// https://i.imgur.com/pQ8ZHGs.png
 
-      <List spacing={3} my={0}>
-        <ListItem>
-          <ListIcon as={CheckCircleIcon} color="green.500" />
-          <ChakraLink
-            isExternal
-            href="https://chakra-ui.com"
-            flexGrow={1}
-            mr={2}
+const FOODS = ['apple', 'broccoli', 'fried-egg', 'kiwi', 'lemon', 'lollipops', 'orange-juice', 'pizza', 'strawberry', 'icecream', 'burger', 'banana', 'potato', 'tomato'];
+
+const Index = () => {
+  const [foodLogo, setFoodLogo] = useState<string>(`/images/apple.png`);
+
+  return (
+    <Container height="100vh" pl="1rem" pr="1rem">
+      <Text fontSize="4xl">SimpleMath Application</Text>
+      <HStack width="full" height="full">
+        <VStack width="20%" height="85%" boxShadow="dark-lg">
+          <Flex
+            direction="column"
+            alignItems="center"
+            justifyContent="flex-start"
+            w="95"
+            pb="1rem"
           >
-            Chakra UI <LinkIcon />
-          </ChakraLink>
-        </ListItem>
-        <ListItem>
-          <ListIcon as={CheckCircleIcon} color="green.500" />
-          <ChakraLink isExternal href="https://nextjs.org" flexGrow={1} mr={2}>
-            Next.js <LinkIcon />
-          </ChakraLink>
-        </ListItem>
-      </List>
-    </Main>
+            <Text mt="0.5rem">Одберете храна</Text>
+            <SimpleGrid
+              mt="1rem"
+              columns={2}
+              spacing={10}
+              justifyContent="space-between"
+            >
+              {FOODS.map((food) => (
+                <Box w="6vh" h="6vh" cursor="pointer" key={FOODS.indexOf(food)}>
+                  <Image
+                    width="100%"
+                    height="100%"
+                    src={`/images/${food}.png`}
+                    onClick={e => setFoodLogo(`/images/${food}.png`)}
+                    />
+                </Box>
+              ))}
+            </SimpleGrid>
+          </Flex>
+        </VStack>
+        <Tabs isFitted boxShadow="dark-lg" width="80%" height="85%" isLazy>
+          <TabList>
+            <Tab>Собирање</Tab>
+            <Tab>Одземање</Tab>
+            <Tab>Множење</Tab>
+            <Tab>Делење</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <Addition imgUrl={foodLogo}/>
+            </TabPanel>
+            <TabPanel>
+              <Subtraction imgUrl={foodLogo} />
+            </TabPanel>
+            <TabPanel>
+              <Multiplication imgUrl={foodLogo} />
+            </TabPanel>
+            <TabPanel>
+              <Divison imgUrl={foodLogo} />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </HStack>
 
-    <DarkModeSwitch />
-    <Footer>
-      <Text>Next ❤️ Chakra</Text>
-    </Footer>
-    <CTA />
-  </Container>
-)
+      <DarkModeSwitch />
+    </Container>
+  );
+};
 
-export default Index
+export default Index;
